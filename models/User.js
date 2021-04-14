@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
-  microsoftId: {
+  microsoftId: { //store a microsoft id
     type: String,
     required: true,
   },
-  displayName: {
+  displayName: { //optional- store display name
     type: String,
     required: true,
   }
 })
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', UserSchema) //to create a user document in database

@@ -1,9 +1,9 @@
-const OIDCStrategy = require('passport-azure-ad').OIDCStrategy
-const mongoose = require('mongoose')
-const config = require('../config/config')
-const User = require('../models/User')
+const OIDCStrategy = require('passport-azure-ad').OIDCStrategy //have to require their strategy to use it
+const mongoose = require('mongoose') //access to mongoose
+const config = require('../config/config') //ask for config file that holds all the secret
+const User = require('../models/User') //
 
-module.exports = function (passport) {
+module.exports = function (passport) { //found on passport site; to be verified before function run below
   passport.use(
     new OIDCStrategy({
         identityMetadata: config.creds.identityMetadata,
@@ -25,20 +25,20 @@ module.exports = function (passport) {
         cookieEncryptionKeys: config.creds.cookieEncryptionKeys,
         clockSkew: config.creds.clockSkew,
       },
-      async (accessToken, refreshToken, profile, done) => {
-        console.log('auth: ', profile)
-        const newUser = {
+      async (accessToken, refreshToken, profile, done) => { //enable us to create new user; once youve logged in you get all this info with each request
+        console.log('auth: ', profile) //ptofile is holding all the info created when logged in created 
+        const newUser = {  
           microsoftId: profile.oid,
           displayName: profile.displayName,
         }
 
-        try {
+        try { //checking if theres a user in database that matches info provided above 
           let user = await User.findOne({ microsoftId: profile.oid })
 
           if (user) {
-            done(null, user)
+            done(null, user) //if a match move on
           } else {
-            user = await User.create(newUser)
+            user = await User.create(newUser) //if no match, create new user using user model(user.js file)
             done(null, user)
           }
         } catch (err) {

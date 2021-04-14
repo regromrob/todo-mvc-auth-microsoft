@@ -3,8 +3,8 @@ const passport = require('passport')
 const config = require('../config/config')
 const router = express.Router()
 
-
-router.get('/login',
+//sets up the routes for people to log in
+router.get('/login', 
   function(req, res, next) {
     passport.authenticate('azuread-openidconnect', 
       { 
@@ -17,7 +17,7 @@ router.get('/login',
   },
   function(req, res) {
     console.log('Login was called in the Sample');
-    res.redirect('/todos');
+    res.redirect('/todos'); //once someone logs in, send them to todos
 });
 
 router.get('/openid/return',
@@ -31,7 +31,7 @@ router.get('/openid/return',
   },
   function(req, res) {
     console.log('We received a return from AzureAD.');
-    res.redirect('/todos');
+    res.redirect('/todos'); 
   });
 
 router.post('/openid/return',
@@ -48,7 +48,7 @@ router.post('/openid/return',
     res.redirect('/todos');
   });
 
-
+//log out route; log out user, session terminate & cant get back to todos unless loged in
 router.get('/logout', function(req, res){
   req.session.destroy(function(err) {
     req.logOut();

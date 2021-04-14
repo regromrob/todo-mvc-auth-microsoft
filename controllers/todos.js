@@ -1,12 +1,12 @@
 const Todo = require('../models/Todo')
 
 module.exports = {
-    getTodos: async (req,res)=>{
+    getTodos: async (req,res)=>{  //load all the todos on page
         console.log(req.user)
         try{
             const todoItems = await Todo.find()
-            const itemsLeft = await Todo.countDocuments({microsoftId: req.user.microsoftId, completed: false})
-            res.render('todos.ejs', {todos: todoItems, left: itemsLeft, user: req.user})
+            const itemsLeft = await Todo.countDocuments({microsoftId: req.user.microsoftId, completed: false}) //request being sent & user property which has microsoft id; can pull id off request & just find document where it matches(only count docs that MSid matches user)
+            res.render('todos.ejs', {todos: todoItems, left: itemsLeft, user: req.user}) //getting specific todos of logged in users
         }catch(err){
             console.log(err)
         }

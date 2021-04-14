@@ -3,7 +3,7 @@ const router = express.Router()
 const todosController = require('../controllers/todos') 
 const { ensureAuth, ensureGuest } = require('../middleware/auth')
 
-router.get('/', ensureAuth, todosController.getTodos)
+router.get('/', ensureAuth, todosController.getTodos) //middleware to check whether or not someone is logged in; ensure auth must run before someone can get to todo list; once loggedin todoscontroller can run
 
 router.post('/createTodo', todosController.createTodo)
 
